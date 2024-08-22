@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primaryBgColor">#EBEAEA</color>
+    <color name='primaryBtncolor'>#8A898C</color>
+    <color name='primaryTextHint'>#827C7C</color><!--specify opacity-->
+    <color name="primaryTextFieldColor">#D9D9D9</color>
 </resources>
