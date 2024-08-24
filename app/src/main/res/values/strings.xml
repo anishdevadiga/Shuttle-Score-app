@@ -10,4 +10,11 @@
     <string name="passwordHint">Password</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="nameHint">Name</string>
+    <string name="googlesignin">Sign in using Google Account</string>
+
+    <!--Logout Profile-->
+    <string name="Profile">Profile</string>
+    <string name="Logout">Logout</string>
+    <string name="changetheme">Change Theme</string>
+    <string name="contact">Contact Us</string>
 </resources>
