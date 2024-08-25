@@ -17,4 +17,5 @@
     <string name="Logout">Logout</string>
     <string name="changetheme">Change Theme</string>
     <string name="contact">Contact Us</string>
+    <string name="ChangePassword">Change Password</string>
 </resources>
