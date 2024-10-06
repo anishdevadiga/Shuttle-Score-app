@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">shuttleScore</string>
     <string name="appLabel">ShuttleScore</string>
+    <string name="apptitle">Shuttle Score</string>
 
     <!--Login Screen-->
     <string name="loginText">LOGIN</string>
