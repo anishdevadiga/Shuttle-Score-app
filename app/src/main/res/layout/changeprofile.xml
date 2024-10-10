@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/alertdialog"
+
+    android:id="@+id/uploadprofile"
+    android:backgroundTint="@color/white"
+    android:backgroundTintMode="add"
+
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/uploaddialogbox"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/alertdialog"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/uploadtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="Upload Profile Image"
+            android:textSize="25dp"
+            android:background="@drawable/dialogboxtopbar"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:fontFamily="@font/amaranth"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textAlignment="center"
+            android:paddingBottom="5dp"
+            />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imagebox"
+            android:layout_width="270dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginEnd="50dp"
+            android:padding="5dp"
+            android:fontFamily="@font/amaranth"
+            android:scaleType="centerCrop"
+            android:background="@drawable/customedittext"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/uploadtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/btncancel"
+            android:text="Cancel"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/amaranth"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:background="@drawable/button_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imagebox"
+            app:layout_constraintEnd_toStartOf="@id/btnupload"
+            app:layout_constraintBottom_toBottomOf="@+id/uploaddialogbox"
+
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/btnupload"
+            android:text="Upload"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:fontFamily="@font/amaranth"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:background="@drawable/button_background"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/uploaddialogbox"
+            app:layout_constraintStart_toEndOf="@+id/btncancel"
+
+            />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+</RelativeLayout>
