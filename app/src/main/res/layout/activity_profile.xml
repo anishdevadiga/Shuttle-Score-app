@@ -7,27 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".profileActivity"
     android:background="@color/primaryBgColor"
-    android:orientation="vertical">
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+
+<com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomnavigationbar"
         android:layout_width="170dp"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_centerInParent="true"
+
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="38dp"
         android:background="@drawable/bottomnavigator"
-        android:id="@+id/bottomnavigationbar"
         android:elevation="2dp"
-        app:menu="@menu/bottom_navigation_menu"
-        app:itemIconSize="70dp"
+        app:itemIconSize="40dp"
         app:itemIconTint="@drawable/itemselector"
-        app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"
-        />
+        app:menu="@menu/bottom_menu" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
@@ -45,15 +45,16 @@
             android:scaleType="fitCenter"
             android:layout_marginTop="40dp"
             android:background="@drawable/profile_foreground"
-            android:layout_gravity="center||center_horizontal||center_vertical"/>
+            android:layout_gravity="center"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="370dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/profilemenulayout"
         android:elevation="20dp"
         android:orientation="vertical"
         android:layout_centerVertical="true"
+        android:id="@+id/menucard"
         android:layout_below="@+id/profilelayout"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
@@ -112,7 +113,7 @@
                 android:background="@drawable/profilearrow_foreground"
                 android:layout_gravity="center"
                 android:scaleType="center"
-                android:layout_marginStart="110dp"/>
+                android:layout_marginStart="90dp"/>
 
 
         </LinearLayout>
@@ -145,7 +146,7 @@
                 android:background="@drawable/profilearrow_foreground"
                 android:layout_gravity="center"
                 android:scaleType="center"
-                android:layout_marginStart="114dp"/>
+                android:layout_marginStart="94dp"/>
 
 
         </LinearLayout>
@@ -178,7 +179,7 @@
                 android:background="@drawable/profilearrow_foreground"
                 android:layout_gravity="center"
                 android:scaleType="center"
-                android:layout_marginStart="51dp"/>
+                android:layout_marginStart="31dp"/>
 
 
         </LinearLayout>
@@ -209,7 +210,7 @@
                 android:layout_height="50dp"
                 android:background="@drawable/profilearrow_foreground"
                 android:layout_gravity="center"
-                android:layout_marginStart="145dp"/>
+                android:layout_marginStart="125dp"/>
 
 
         </LinearLayout>

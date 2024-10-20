@@ -16,16 +16,27 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:gravity="center"
+        android:orientation="horizontal"
         android:id="@+id/toll">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/back"
+            android:background="@drawable/arrow_foreground"
+            android:layout_marginTop="1dp"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/apptitle"
             android:textSize="20sp"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:gravity="center"
+            android:layout_marginStart="90dp"
             android:textColor="@color/white"
             android:fontFamily="@font/amaranth"
-            android:layout_gravity="center||center_vertical||center_horizontal"/>
+            />
+
     </LinearLayout>
     <ImageView
         android:layout_width="200dp"

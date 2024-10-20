@@ -5,7 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/logout"
     android:layout_centerHorizontal="true"
-    android:background="@color/white">
+    android:background="@drawable/alertdialog"
+    android:backgroundTint="@color/primaryBgColor"
+    >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,7 +50,7 @@
             android:textAlignment="center"
             app:layout_constraintTop_toBottomOf="@+id/logouttitle"
             />
-        <Button
+        <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:id="@+id/btnlogcancel"
@@ -57,6 +59,7 @@
             android:layout_marginEnd="10dp"
             android:textColor="@color/white"
             android:textSize="15sp"
+            android:paddingTop="14sp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/amaranth"
@@ -68,11 +71,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnlogout"
             />
-        <Button
+        <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:id="@+id/btnlogout"
             android:text="Logout"
+            android:paddingTop="14sp"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:fontFamily="@font/amaranth"
