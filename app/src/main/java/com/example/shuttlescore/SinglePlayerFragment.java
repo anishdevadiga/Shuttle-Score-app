@@ -78,7 +78,24 @@ public class SinglePlayerFragment extends Fragment {
         });
 
         // Save data when Start button is clicked
-        startButton.setOnClickListener(v -> {saveDataToFirebase(); clearFields();});
+        startButton.setOnClickListener(v -> {
+            // Assuming you have EditText fields to get player names
+            String player1Name = team1player1NameEditText.getText().toString().trim();
+            String player2Name = team2player1NameEditText.getText().toString().trim();
+
+            // Create an intent to move to the layout_java activity (where the scoring interface is)
+            Intent intent = new Intent(getActivity(), layout_java.class);
+
+            // Pass player names as extras in the intent
+            intent.putExtra("player1Name", player1Name);
+            intent.putExtra("player2Name", player2Name);
+
+            // Start the new activity
+            startActivity(intent);
+
+            saveDataToFirebase();
+            clearFields();
+        });
 
 
         return view;

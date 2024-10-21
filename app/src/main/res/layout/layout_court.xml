@@ -1,0 +1,343 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F3F3F3">
+
+    <!-- Header section with GAME 1 and the new Back Button -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Header Text (Game 1) -->
+        <TextView
+            android:id="@+id/gameTitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="16dp"
+            android:background="#F3F3F3"
+            android:gravity="start"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingBottom="8dp"
+            android:text="GAME 1"
+            android:textColor="#0D2EE6"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- New Back Button on top-right corner -->
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BACK"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="4dp"
+            android:rotation="90"
+            android:layout_marginRight="-35dp"
+            android:backgroundTint="#D6D6D6" />
+
+    </RelativeLayout>
+
+    <!-- Button above the court -->
+    <Button
+        android:id="@+id/buttonTop"
+        android:layout_width="305dp"
+        android:layout_marginLeft="12dp"
+        android:layout_height="wrap_content"
+        android:text="+1"
+        android:textSize="16sp"
+        android:backgroundTint="#D6D6D6"
+        android:textColor="#000000"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <!-- Left-side vertical section for Finish and Undo buttons -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="550dp"
+            android:gravity="start|bottom"
+            android:orientation="vertical"
+            tools:ignore="ExtraText">
+
+            <!-- Comment Button -->
+            <Button
+                android:id="@+id/comment"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-10dp"
+                android:layout_marginBottom="-110dp"
+                android:backgroundTint="#D6D6D6"
+                android:rotation="90"
+                android:text="C"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <!-- Undo Button -->
+            <Button
+                android:id="@+id/undoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-23dp"
+                android:layout_marginTop="140dp"
+                android:layout_marginBottom="-270dp"
+                android:backgroundTint="#D6D6D6"
+                android:rotation="90"
+                android:text="Undo"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/finishButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-23dp"
+                android:layout_marginBottom="-100dp"
+                android:layout_marginTop="60dp"
+                android:backgroundTint="#D6D6D6"
+                android:rotation="90"
+                android:text="Finish"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/player1Serve"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_marginLeft="-55dp"
+                android:layout_marginTop="-235dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="#F3F3F3"
+                android:rotation="90"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/loveAll"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="-30dp"
+                android:layout_marginTop="4dp"
+                android:backgroundTint="#D6D6D6"
+                android:rotation="90"
+                android:text="Love all"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_marginLeft="-30dp"
+                android:layout_marginBottom="-25dp"
+                android:backgroundTint="#D6D6D6"
+                android:rotation="90"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Main Court Layout -->
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="-20dp"
+            android:background="#FFFFFF"
+            android:padding="0dp">
+
+            <!-- Outer border of the court -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000" />
+
+            <!-- Inner court area for Player 1 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_marginLeft="-35dp"
+                android:background="#FFFFFF" />
+
+            <!-- Vertical line from top to the upper horizontal line -->
+            <View
+                android:layout_width="2dp"
+                android:layout_height="220dp"
+                android:background="#000000"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <!-- Vertical line from bottom to the lower horizontal line -->
+            <View
+                android:layout_width="2dp"
+                android:layout_height="220dp"
+                android:background="#000000"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+
+            <!-- Horizontal middle line -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000000"
+                android:layout_centerVertical="true" />
+
+            <!-- Top horizontal line (Above middle) -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000000"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="220dp" />
+
+            <!-- Bottom horizontal line (Below middle) -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000000"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="220dp" />
+
+            <!-- Left vertical line -->
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="50dp" />
+
+            <!-- Right vertical line -->
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="50dp" />
+
+            <!-- Block 1 (TextView) -->
+            <TextView
+                android:id="@+id/block1"
+                android:layout_width="88dp"
+                android:layout_height="212dp"
+                android:text=""
+                android:textSize="20sp"
+                android:textColor="#00FF00"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="53dp"
+                android:layout_marginTop="8dp" />
+            <!-- Block 2 (TextView) -->
+            <TextView
+                android:id="@+id/block2"
+                android:layout_width="88dp"
+                android:layout_height="212dp"
+                android:text=""
+                android:textSize="20sp"
+                android:textColor="#00FF00"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="144dp"
+                android:layout_marginTop="8dp" />
+
+            <!-- Block 3 (TextView) -->
+            <TextView
+                android:id="@+id/block3"
+                android:layout_width="88dp"
+                android:layout_height="212dp"
+                android:text=""
+                android:textSize="20sp"
+                android:textColor="#00FF00"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="53dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Block 4 (TextView) -->
+            <TextView
+                android:id="@+id/block4"
+                android:layout_width="88dp"
+                android:layout_height="212dp"
+                android:text=""
+                android:textSize="20sp"
+                android:textColor="#00FF00"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="144dp"
+                android:layout_marginBottom="8dp" />
+        </RelativeLayout>
+
+        <!-- Right-side vertical section for Player1 and Player2 -->
+
+        <LinearLayout
+            android:layout_width="71dp"
+            android:layout_marginRight="-10dp"
+            android:layout_marginLeft="-30dp"
+            android:layout_height="550dp"
+            android:gravity="end|bottom"
+            android:orientation="vertical"
+            tools:ignore="ExtraText">
+
+            <!-- Player 1 TextView -->
+            <TextView
+                android:id="@+id/player1"
+                android:layout_width="50dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="-400dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="150dp"
+                android:rotation="90"
+                android:text="Player 1"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <!-- Player 2 TextView -->
+            <TextView
+                android:id="@+id/player2"
+                android:layout_width="50dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="20dp"
+                android:rotation="90"
+                android:text="Player 2"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Button below the court -->
+    <Button
+        android:id="@+id/buttonBottom"
+        android:layout_width="305dp"
+        android:layout_marginLeft="12dp"
+        android:layout_height="wrap_content"
+        android:text="+1"
+        android:textSize="16sp"
+        android:backgroundTint="#D6D6D6"
+        android:textColor="#000000"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center" />
+
+</LinearLayout>
