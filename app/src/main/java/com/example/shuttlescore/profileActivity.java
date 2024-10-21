@@ -1,14 +1,18 @@
 package com.example.shuttlescore;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -30,7 +35,7 @@ public class profileActivity extends AppCompatActivity {
     private ImageView selectedImage; // Profile image in main profile
     private ImageView dialogImage; // ImageView in the dialog
     private Bitmap selectedBitmap;
-    boolean passwordvisible,passvisible;// To store the selected bitmap
+    boolean passwordvisible, passvisible;// To store the selected bitmap
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,15 @@ public class profileActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setSelectedItemId(R.id.person);
         selectedImage = findViewById(R.id.profilepic); // The profile picture in the main layout
+
+        // Retrieve and set saved image from SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("profilePrefs", Context.MODE_PRIVATE);
+        String savedImage = prefs.getString("profileImage", null);
+        if (savedImage != null) {
+            byte[] imageBytes = Base64.decode(savedImage, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            selectedImage.setImageBitmap(bitmap); // Set saved image
+        }
 
         // Bottom navigation selection listener
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -63,10 +77,25 @@ public class profileActivity extends AppCompatActivity {
         LinearLayout l3 = findViewById(R.id.menu3);
         LinearLayout l4 = findViewById(R.id.menu4);
 
+        // Logic for l1 to pass image to next intent
         l1.setOnClickListener(view -> {
-            Intent intent = new Intent(profileActivity.this, showumpireinfo.class);
-            startActivity(intent);
-            finish();
+            // Ensure there's an image set
+            if (selectedImage.getDrawable() != null) {
+                // Convert the image to a ByteArray
+                selectedImage.setDrawingCacheEnabled(true);
+                selectedImage.buildDrawingCache();
+                Bitmap bitmap = selectedBitmap; // Use the current selectedBitmap
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream); // Compress bitmap to PNG
+                byte[] byteArray = stream.toByteArray();
+
+                // Pass the byteArray to the new Intent
+                Intent intent = new Intent(profileActivity.this, appinfo.class);
+                intent.putExtra("profileImage", byteArray);
+                startActivity(intent);
+                finish();
+            }
         });
 
         // Click listener for profile update
@@ -80,10 +109,18 @@ public class profileActivity extends AppCompatActivity {
 
             dialogView.findViewById(R.id.btncancel).setOnClickListener(v -> dialog.dismiss());
 
-
             dialogView.findViewById(R.id.btnupload).setOnClickListener(v -> {
                 if (selectedBitmap != null) {
                     selectedImage.setImageBitmap(selectedBitmap);
+
+                    // Save the selected image to SharedPreferences
+                    SharedPreferences.Editor editor = getSharedPreferences("profilePrefs", Context.MODE_PRIVATE).edit();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    selectedBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] imageBytes = baos.toByteArray();
+                    String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                    editor.putString("profileImage", encodedImage);
+                    editor.apply();
                 }
                 dialog.dismiss();
             });
@@ -100,17 +137,18 @@ public class profileActivity extends AppCompatActivity {
 
             dialog.show();
         });
+
         l3.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder b1=new AlertDialog.Builder(profileActivity.this);
-                View v1=getLayoutInflater().inflate(R.layout.changepassword,null);
+                AlertDialog.Builder b1 = new AlertDialog.Builder(profileActivity.this);
+                View v1 = getLayoutInflater().inflate(R.layout.changepassword, null);
                 b1.setView(v1);
 
-                AlertDialog dialog1=b1.create();
-                EditText currentpass=(EditText)v1.findViewById(R.id.currentpassbox);
-                EditText newpass=(EditText)v1.findViewById(R.id.newpassbox);
+                AlertDialog dialog1 = b1.create();
+                EditText currentpass = v1.findViewById(R.id.currentpassbox);
+                EditText newpass = v1.findViewById(R.id.newpassbox);
                 currentpass.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -119,15 +157,11 @@ public class profileActivity extends AppCompatActivity {
                             if (event.getRawX() >= currentpass.getRight() - currentpass.getCompoundDrawables()[End].getBounds().width()) {
                                 int selection = currentpass.getSelectionEnd();
                                 if (passwordvisible) {
-                                    // Set the drawable for password hidden (eye closed icon)
                                     currentpass.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeff_foreground, 0);
-                                    // Hide password
                                     currentpass.setTransformationMethod(PasswordTransformationMethod.getInstance());
                                     passwordvisible = false;
                                 } else {
-                                    // Set the drawable for password visible (eye open icon)
                                     currentpass.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeon_foreground, 0);
-                                    // Show password
                                     currentpass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                                     passwordvisible = true;
                                 }
@@ -148,12 +182,10 @@ public class profileActivity extends AppCompatActivity {
                                 int selection = currentpass.getSelectionEnd();
                                 if (passvisible) {
                                     newpass.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeff_foreground, 0);
-                                    //hide password
                                     newpass.setTransformationMethod(PasswordTransformationMethod.getInstance());
                                     passvisible = false;
                                 } else {
                                     newpass.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeon_foreground, 0);
-                                    //show password
                                     newpass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                                     passvisible = true;
                                 }
@@ -165,35 +197,24 @@ public class profileActivity extends AppCompatActivity {
                     }
                 });
 
-                v1.findViewById(R.id.btncancelpass).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog1.dismiss();
-                    }
-                });
-                if(dialog1.getWindow()!=null)
-                {
+                v1.findViewById(R.id.btncancelpass).setOnClickListener(view1 -> dialog1.dismiss());
+                if (dialog1.getWindow() != null) {
                     dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 }
                 dialog1.show();
             }
         });
+
         l4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder b2=new AlertDialog.Builder(profileActivity.this);
-                View v2=getLayoutInflater().inflate(R.layout.logoutdialog,null);
+                AlertDialog.Builder b2 = new AlertDialog.Builder(profileActivity.this);
+                View v2 = getLayoutInflater().inflate(R.layout.logoutdialog, null);
                 b2.setView(v2);
 
-                AlertDialog dialog2=b2.create();
-                v2.findViewById(R.id.btnlogcancel).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog2.dismiss();
-                    }
-                });
-                if(dialog2.getWindow()!=null)
-                {
+                AlertDialog dialog2 = b2.create();
+                v2.findViewById(R.id.btnlogcancel).setOnClickListener(view1 -> dialog2.dismiss());
+                if (dialog2.getWindow() != null) {
                     dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 }
                 dialog2.show();
@@ -208,9 +229,8 @@ public class profileActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
             try {
-                // Get the selected image as a bitmap and display it in the dialog's ImageView
                 selectedBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                dialogImage.setImageBitmap(selectedBitmap); // Show the image in the dialog
+                dialogImage.setImageBitmap(selectedBitmap); // Set image in dialog
             } catch (IOException e) {
                 e.printStackTrace();
             }

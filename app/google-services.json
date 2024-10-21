@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "940841470124",
+    "firebase_url": "https://shuttle-score-app-default-rtdb.firebaseio.com",
+    "project_id": "shuttle-score-app",
+    "storage_bucket": "shuttle-score-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940841470124:android:e6f5c7a655c997d730f709",
+        "android_client_info": {
+          "package_name": "com.example.shuttlescore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArIf_GCGRKgOBuGQdSW0DvVoA65VR5lwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

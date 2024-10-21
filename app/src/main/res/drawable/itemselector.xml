@@ -6,6 +6,6 @@
         android:drawable="@color/navigation"/>
     <item
         android:state_selected="false"
-        android:color="@color/white"
+        android:color="@color/primaryBtncolor"
         android:drawable="@color/navigation"/>
 </selector>

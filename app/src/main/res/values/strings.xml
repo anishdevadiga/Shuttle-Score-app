@@ -20,4 +20,5 @@
     <string name="contact">Contact Us</string>
     <string name="ChangePassword">Change Password</string>
     <string name="logoutmsg">Are you sure about logout</string>
+    <string name="aboutapp"></string>
 </resources>
