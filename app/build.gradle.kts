@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id ("com.google.gms.google-services")
 }
 
 android {
@@ -12,6 +13,8 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,7 +40,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }

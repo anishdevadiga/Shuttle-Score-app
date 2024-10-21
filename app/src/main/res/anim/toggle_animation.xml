@@ -1,0 +1,33 @@
+<!-- res/anim/toggle_animation.xml -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true">
+
+    <!-- Scale Up -->
+    <scale
+        android:fromXScale="1.0"
+        android:toXScale="1.2"
+        android:fromYScale="1.0"
+        android:toYScale="1.0"
+        android:duration="100" />
+
+    <!-- Fade Out -->
+<!--    <alpha-->
+<!--        android:fromAlpha="1.0"-->
+<!--        android:toAlpha="0.5"-->
+<!--        android:duration="100" />-->
+
+
+    <!-- Scale Down -->
+    <scale
+        android:fromXScale="1.2"
+        android:toXScale="1.0"
+        android:fromYScale="1.0"
+        android:toYScale="1.0"
+        android:duration="100" />
+
+    <!-- Fade In -->
+<!--    <alpha-->
+<!--        android:fromAlpha="0.5"-->
+<!--        android:toAlpha="1.0"-->
+<!--        android:duration="100" />-->
+</set>

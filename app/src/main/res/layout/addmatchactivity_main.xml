@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="#CCCCCC">
+
+    <!-- Header Layout -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingTop="10dp"
+        android:background="@drawable/shapetoolbar"
+        android:id="@+id/toolbar">
+
+        <!-- Back Arrow Icon -->
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:contentDescription="Back"
+            android:src="@mipmap/arrowback"
+            android:layout_gravity="start"
+            />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shuttle Score"
+            android:layout_gravity="center"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_margin="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:id="@+id/back2"
+        android:orientation="horizontal"
+        android:layout_below="@+id/toolbar">
+
+        <!-- Single Toggle Button -->
+        <RadioButton
+            android:id="@+id/toggleSingle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_background"
+            android:button="@null"
+            android:checked="true"
+            android:fontFamily="@font/amaranth_bold"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:text="Single"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <!-- Double Toggle Button -->
+        <RadioButton
+            android:id="@+id/toggleDouble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_background"
+            android:button="@null"
+            android:fontFamily="@font/amaranth_bold"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:text="Double"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/back2"
+        android:layout_marginTop="20dp"/>
+</RelativeLayout>
