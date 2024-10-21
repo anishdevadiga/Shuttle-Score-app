@@ -6,4 +6,10 @@
     <color name='primaryBtncolor'>#8A898C</color>
     <color name='primaryTextHint'>#827C7C</color><!--specify opacity-->
     <color name="primaryTextFieldColor">#D9D9D9</color>
+
+    <!---Login page-->
+    <color name="TextColor">#827C7C</color>
+    <color name='TextBG'>#D9D9D9</color>
+    <color name='Opacity'>#EBEAEA</color>
+    <color name='BtnBg'>#8A898C</color>
 </resources>
