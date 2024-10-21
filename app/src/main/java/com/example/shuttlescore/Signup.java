@@ -78,7 +78,7 @@ public class Signup extends AppCompatActivity {
             return;
         }
         if (!userPassword.equals(confirmPassword)) {
-            confirm.setError("Passwords do not match");
+            confirm.setError("Passwords do not` match");
             return;
         }
 
