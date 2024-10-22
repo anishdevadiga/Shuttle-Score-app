@@ -1,0 +1,135 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D3D3D3"
+    tools:context=".Login">
+
+    <!-- Background image -->
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/appicon"
+        android:alpha="0.2"
+        android:contentDescription="Login Background Image" />
+
+    <!-- Transparent overlay for the login card -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:background="@drawable/cardview_background"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:elevation="4dp"
+        android:layout_margin="30dp">
+
+        <!-- Login text -->
+        <TextView
+            android:id="@+id/loginTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="LOGIN"
+            android:fontFamily="@font/amaranth"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Email input -->
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Email"
+            android:fontFamily="@font/amaranth"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edittext_background"
+            android:textColor="@android:color/black" />
+
+        <!-- Password input -->
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Password"
+            android:fontFamily="@font/amaranth"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edittext_background"
+            android:textColor="@android:color/black" />
+
+        <!-- Forgot password -->
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password"
+            android:fontFamily="@font/amaranth"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_gravity="end"
+            android:layout_marginTop="10dp" />
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="LOGIN"
+            android:fontFamily="@font/amaranth"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#8A898C"
+            android:layout_marginTop="20dp"
+            android:padding="10dp" />
+
+        <!-- Register & Google Sign-in options -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New User, Create an Account:"
+                android:textSize="14sp"
+                android:fontFamily="@font/amaranth"
+                android:textColor="#827C7C"/>
+
+            <TextView
+                android:id="@+id/register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/amaranth"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+            <!-- Google Sign-in Button -->
+            <Button
+                android:id="@+id/google_signin"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Sign in with Google"
+                android:fontFamily="@font/amaranth"
+                android:textColor="#827C7C"
+                android:backgroundTint="#D9D9D9"
+                android:layout_marginTop="10dp"
+                android:padding="10dp" />
+
+    </LinearLayout>
+  </FrameLayout>
