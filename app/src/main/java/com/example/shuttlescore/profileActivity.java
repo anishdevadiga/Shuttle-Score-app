@@ -18,12 +18,21 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,12 +45,18 @@ public class profileActivity extends AppCompatActivity {
     private ImageView dialogImage; // ImageView in the dialog
     private Bitmap selectedBitmap;
     boolean passwordvisible, passvisible;// To store the selected bitmap
+    private FirebaseAuth mAuth;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
+
+        // Initialize Firebase Auth and Database
+        mAuth = FirebaseAuth.getInstance();
+        userRef = FirebaseDatabase.getInstance().getReference("Users");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setSelectedItemId(R.id.person);
@@ -55,6 +70,11 @@ public class profileActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
             selectedImage.setImageBitmap(bitmap); // Set saved image
         }
+
+        // Load username and email from Firebase Realtime Database
+        TextView user = findViewById(R.id.username);
+        TextView email = findViewById(R.id.email);
+        loadUserProfile(user, email);
 
         // Bottom navigation selection listener
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -71,6 +91,19 @@ public class profileActivity extends AppCompatActivity {
             return false;
         });
 
+        // Image delete logic
+        ImageView delete = findViewById(R.id.deleteIcon);
+        delete.setOnClickListener(view -> {
+            // Clear the image from SharedPreferences
+            SharedPreferences.Editor editor = getSharedPreferences("profilePrefs", Context.MODE_PRIVATE).edit();
+            editor.remove("profileImage");
+            editor.apply();
+
+            // Clear the ImageView by setting it to a placeholder image or null
+            selectedImage.setImageResource(R.drawable.profile_foreground); // Replace with your placeholder
+            selectedBitmap = null; // Remove the bitmap reference
+        });
+
         // Menu items
         LinearLayout l1 = findViewById(R.id.menu1);
         LinearLayout l2 = findViewById(R.id.menu2);
@@ -79,26 +112,29 @@ public class profileActivity extends AppCompatActivity {
 
         // Logic for l1 to pass image to next intent
         l1.setOnClickListener(view -> {
+            Intent intent = new Intent(profileActivity.this, appinfo.class);
+            startActivity(intent);
+            finish();
             // Ensure there's an image set
-            if (selectedImage.getDrawable() != null) {
-                // Convert the image to a ByteArray
-                selectedImage.setDrawingCacheEnabled(true);
-                selectedImage.buildDrawingCache();
-                Bitmap bitmap = selectedBitmap; // Use the current selectedBitmap
-
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream); // Compress bitmap to PNG
-                byte[] byteArray = stream.toByteArray();
-
-                // Pass the byteArray to the new Intent
-                Intent intent = new Intent(profileActivity.this, appinfo.class);
-                intent.putExtra("profileImage", byteArray);
-                startActivity(intent);
-                finish();
-            }
+//            if (selectedImage.getDrawable() != null) {
+//                // Convert the image to a ByteArray
+//                selectedImage.setDrawingCacheEnabled(true);
+//                selectedImage.buildDrawingCache();
+//                Bitmap bitmap = selectedBitmap; // Use the current selectedBitmap
+//
+//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream); // Compress bitmap to PNG
+//                byte[] byteArray = stream.toByteArray();
+//
+//                // Pass the byteArray to the new Intent
+//                Intent intent = new Intent(profileActivity.this, appinfo.class);
+//                intent.putExtra("profileImage", byteArray);
+//                startActivity(intent);
+//                finish();
+//            }
         });
 
-        // Click listener for profile update
+        // Click listener for profile update dialog
         l2.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(profileActivity.this);
             View dialogView = getLayoutInflater().inflate(R.layout.changeprofile, null);
@@ -138,102 +174,209 @@ public class profileActivity extends AppCompatActivity {
             dialog.show();
         });
 
-        l3.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder b1 = new AlertDialog.Builder(profileActivity.this);
-                View v1 = getLayoutInflater().inflate(R.layout.changepassword, null);
-                b1.setView(v1);
+        // Change password logic in l3
+        l3.setOnClickListener(view -> showChangePasswordDialog());
 
-                AlertDialog dialog1 = b1.create();
-                EditText currentpass = v1.findViewById(R.id.currentpassbox);
-                EditText newpass = v1.findViewById(R.id.newpassbox);
-                currentpass.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        final int End = 2;
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            if (event.getRawX() >= currentpass.getRight() - currentpass.getCompoundDrawables()[End].getBounds().width()) {
-                                int selection = currentpass.getSelectionEnd();
-                                if (passwordvisible) {
-                                    currentpass.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeff_foreground, 0);
-                                    currentpass.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                                    passwordvisible = false;
-                                } else {
-                                    currentpass.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeon_foreground, 0);
-                                    currentpass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                                    passwordvisible = true;
-                                }
-                                currentpass.setSelection(selection);
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                });
+        // Logout logic in l4
+        l4.setOnClickListener(view -> {
+            AlertDialog.Builder b2 = new AlertDialog.Builder(profileActivity.this);
+            View v2 = getLayoutInflater().inflate(R.layout.logoutdialog, null);
+            b2.setView(v2);
 
-                newpass.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        final int End = 2;
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            if (event.getRawX() >= newpass.getRight() - newpass.getCompoundDrawables()[End].getBounds().width()) {
-                                int selection = currentpass.getSelectionEnd();
-                                if (passvisible) {
-                                    newpass.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeff_foreground, 0);
-                                    newpass.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                                    passvisible = false;
-                                } else {
-                                    newpass.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeon_foreground, 0);
-                                    newpass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                                    passvisible = true;
-                                }
-                                newpass.setSelection(selection);
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                });
+            AlertDialog dialog2 = b2.create();
 
-                v1.findViewById(R.id.btncancelpass).setOnClickListener(view1 -> dialog1.dismiss());
-                if (dialog1.getWindow() != null) {
-                    dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                }
-                dialog1.show();
+            // Cancel button to dismiss the dialog
+            v2.findViewById(R.id.btnlogcancel).setOnClickListener(view1 -> dialog2.dismiss());
+
+            // Confirm logout button
+            v2.findViewById(R.id.btnlogout).setOnClickListener(view12 -> {
+                // Perform logout
+                mAuth.signOut();
+                Toast.makeText(profileActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+
+                // Go back to the login screen
+//                Intent intent = new Intent(profileActivity.this, LoginActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//                finish(); // Optional: Call finish() to remove this activity from the back stack
+
+                dialog2.dismiss(); // Dismiss the dialog after logout
+            });
+
+            if (dialog2.getWindow() != null) {
+                dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
-        });
-
-        l4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder b2 = new AlertDialog.Builder(profileActivity.this);
-                View v2 = getLayoutInflater().inflate(R.layout.logoutdialog, null);
-                b2.setView(v2);
-
-                AlertDialog dialog2 = b2.create();
-                v2.findViewById(R.id.btnlogcancel).setOnClickListener(view1 -> dialog2.dismiss());
-                if (dialog2.getWindow() != null) {
-                    dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                }
-                dialog2.show();
-            }
+            dialog2.show();
         });
     }
 
-    // Handle the result from the gallery intent
+    // Load user profile (username, email) from Firebase Realtime Database
+    private void loadUserProfile(TextView usernameTextView, TextView emailTextView) {
+        // Check if the user is logged in
+        if (mAuth.getCurrentUser() != null) {
+            String userId = mAuth.getCurrentUser().getUid();
+            userRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String username = dataSnapshot.child("username").getValue(String.class);
+                        String email = dataSnapshot.child("email").getValue(String.class);
+                        usernameTextView.setText(username);
+                        emailTextView.setText(email);
+                    } else {
+                        // Handle case where user data does not exist
+                        usernameTextView.setText("User not found");
+                        emailTextView.setText("No email found");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle database error
+                    usernameTextView.setText("Error loading username");
+                    emailTextView.setText("Error loading email");
+                }
+            });
+        } else {
+            // User is not logged in
+            usernameTextView.setText("Not logged in");
+            emailTextView.setText("No email available");
+        }
+    }
+
+
+    // Logic to toggle password visibility
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri imageUri = data.getData();
             try {
                 selectedBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                dialogImage.setImageBitmap(selectedBitmap); // Set image in dialog
+                dialogImage.setImageBitmap(selectedBitmap); // Set the selected image in the dialog
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+    private void showChangePasswordDialog() {
+        AlertDialog.Builder b1 = new AlertDialog.Builder(profileActivity.this);
+        View v1 = getLayoutInflater().inflate(R.layout.changepassword, null);
+        b1.setView(v1);
+
+        AlertDialog dialog1 = b1.create();
+        EditText currentpass = v1.findViewById(R.id.currentpassbox);
+        EditText newpass = v1.findViewById(R.id.newpassbox);
+        TextView authenticateBtn = v1.findViewById(R.id.btnauth);
+        TextView changePasswordBtn = v1.findViewById(R.id.btnchange);
+
+        // Initially disable new password field and change button
+        newpass.setEnabled(false);
+        changePasswordBtn.setEnabled(false);
+
+        // Logic to toggle password visibility
+        setPasswordToggleLogic(currentpass, true);
+        setPasswordToggleLogic(newpass, false);
+
+        // Authenticate current password
+        authenticateBtn.setOnClickListener(view -> {
+            String enteredCurrentPassword = currentpass.getText().toString();
+            if (enteredCurrentPassword.isEmpty()) {
+                Toast.makeText(profileActivity.this, "Enter current password", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            authenticateCurrentPassword(enteredCurrentPassword, newpass, changePasswordBtn);
+        });
+
+        // Change password on valid authentication
+        changePasswordBtn.setOnClickListener(view -> {
+            String newPassword = newpass.getText().toString();
+            if (!newPassword.isEmpty()) {
+                changePassword(newPassword);
+                dialog1.dismiss();
+            } else {
+                Toast.makeText(profileActivity.this, "Enter new password", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        v1.findViewById(R.id.btncancelpass).setOnClickListener(view1 -> dialog1.dismiss());
+
+        if (dialog1.getWindow() != null) {
+            dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        dialog1.show();
+    }
+
+    // Authenticate current password using Firebase Realtime Database
+    private void authenticateCurrentPassword(String currentPassword, EditText newPass, TextView changePasswordBtn) {
+        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        userRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String storedPassword = dataSnapshot.child("password").getValue(String.class);
+                    if (storedPassword != null && storedPassword.equals(currentPassword)) {
+                        Toast.makeText(profileActivity.this, "Authenticated", Toast.LENGTH_SHORT).show();
+                        newPass.setEnabled(true); // Enable new password field
+                        changePasswordBtn.setEnabled(true); // Enable change password button
+                    } else {
+                        Toast.makeText(profileActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(profileActivity.this, "Error authenticating", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Change password in Firebase Realtime Database
+    private void changePassword(String newPassword) {
+        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        userRef.child(userId).child("password").setValue(newPassword).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(profileActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(profileActivity.this, "Failed to change password", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Logic to toggle password visibility
+    @SuppressLint("ClickableViewAccessibility")
+    private void setPasswordToggleLogic(EditText passwordEditText, boolean isCurrentPassword) {
+        passwordEditText.setOnTouchListener((view, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                int drawableRight = 2;
+                if (event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[drawableRight].getBounds().width())) {
+                    if (isCurrentPassword) {
+                        if (passwordvisible) {
+                            passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            passwordEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeon_foreground, 0);
+                            passwordvisible = false;
+                        } else {
+                            passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            passwordEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeff_foreground, 0);
+                            passwordvisible = true;
+                        }
+                    } else {
+                        if (passvisible) {
+                            passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            passwordEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeon_foreground, 0);
+                            passvisible = false;
+                        } else {
+                            passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            passwordEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visilbeff_foreground, 0);
+                            passvisible = true;
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        });
     }
 }

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".appinfo"
+    android:orientation="vertical"
     android:background="@color/primaryBgColor"
     android:fitsSystemWindows="true">
 
@@ -27,40 +28,119 @@
             android:background="@drawable/arrow_foreground"
             android:layout_marginTop="1dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/apptitle"
-            android:textSize="20sp"
-            android:layout_gravity="center|center_horizontal|center_vertical"
-            android:gravity="center"
-            android:layout_marginStart="90dp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/amaranth" />
-
     </LinearLayout>
 
     <!-- Profile Image -->
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:id="@+id/image"
-        android:layout_below="@id/toll"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/profileiconpage_foreground"/>
 
-    <!-- Umpire Name TextView -->
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- TableLayout for Umpire Info -->
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="John Doe"
-    android:id="@+id/umpireNameTextView"
-    android:textSize="24sp"
-    android:textColor="@color/navigation"
-    android:fontFamily="@font/amaranth"
-    android:layout_below="@id/image"
-    android:layout_marginTop="20dp"
-    android:layout_centerHorizontal="true" />
+        android:layout_marginTop="90dp"
+        android:padding="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+
+        android:stretchColumns="1">
+
+        <!-- Row 1: Name -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"> <!-- Spacing between rows -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="18sp"
+                android:textColor="@color/navigation"
+                android:fontFamily="@font/amaranth"
+                android:layout_marginEnd="20dp" /> <!-- Spacing between columns -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="John Doe"
+                android:id="@+id/nametext"
+                android:textSize="18sp"
+                android:textColor="@color/navigation"
+                android:fontFamily="@font/amaranth" />
+        </TableRow>
+
+        <!-- Row 2: Email -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"> <!-- Spacing between rows -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="18sp"
+                android:textColor="@color/navigation"
+                android:fontFamily="@font/amaranth"
+                android:layout_marginEnd="20dp" /> <!-- Spacing between columns -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="johndoe@example.com"
+                android:textSize="18sp"
+                android:id="@+id/emailtext"
+                android:textColor="@color/navigation"
+                android:fontFamily="@font/amaranth" />
+        </TableRow>
+
+        <!-- Row 3: Phone Number -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"> <!-- Spacing between rows -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone Number"
+                android:textSize="18sp"
+                android:textColor="@color/navigation"
+                android:fontFamily="@font/amaranth"
+                android:layout_marginEnd="20dp" /> <!-- Spacing between columns -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+1234567890"
+                android:id="@+id/phonenumbertext"
+                android:textSize="18sp"
+                android:textColor="@color/navigation"
+                android:fontFamily="@font/amaranth" />
+        </TableRow>
+
+        <!-- Row 4: Matches -->
+        <!-- <TableRow
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:padding="10dp">
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Matches"
+                 android:textSize="18sp"
+                 android:textColor="@color/navigation"
+                 android:fontFamily="@font/amaranth"
+                 android:layout_marginEnd="20dp" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="0"
+                 android:textSize="18sp"
+                 android:id="@+id/matchtext"
+                 android:textColor="@color/navigation"
+                 android:fontFamily="@font/amaranth" />
+         </TableRow>-->
+
+    </TableLayout>
 
 </RelativeLayout>
